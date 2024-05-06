@@ -23,7 +23,7 @@ class AvatarWidget extends StatelessWidget {
         child: imagePath == null
             ? const Icon(Icons.image)
             : ClipRRect(
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(220),
                 child: Image.file(File(imagePath!), fit: BoxFit.cover),
               ),
       ),

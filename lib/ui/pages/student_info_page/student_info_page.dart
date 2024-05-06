@@ -245,7 +245,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
             ),
             const SizedBox(height: 50),
             AvatarWidget(imagePath: imagePath),
-            const SizedBox(height: 40),
+            const SizedBox(height: 50),
             PrimaryButton(
                 weight: 260,
                 height: 55,

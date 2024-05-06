@@ -10,8 +10,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
-@override
+  @override
   void initState() {
     //Đợi 3s sau đó chuyển sang màn login
     Future.delayed(
@@ -27,6 +26,7 @@ class _SplashPageState extends State<SplashPage> {
     );
     super.initState();
   }
+
   //UI chính
   @override
   Widget build(BuildContext context) {
