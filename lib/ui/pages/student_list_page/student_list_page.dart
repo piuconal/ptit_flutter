@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ptit_flutter/data/models/student.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ptit_flutter/ui/pages/edit_student_page/edit_student_page.dart';
 
 class StudentListPage extends StatefulWidget {
   const StudentListPage(
@@ -15,6 +18,47 @@ class _StudentListPageState extends State<StudentListPage> {
   String majorsValue = 'Công nghệ thông tin';
   String coursesValue = 'D20';
   String? imagePath;
+  List<Student> students = [];
+
+  Future<void> getStudent(
+      {required String key, required bool isCourses}) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('students')
+          .where(isCourses ? 'course' : 'majors', isEqualTo: key)
+          .get();
+
+      students = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return Student.fromMap(data);
+      }).toList();
+
+      print('Đã lấy ra danh sách sinh viên thành công.');
+    } catch (e) {
+      print('Lỗi khi lấy ra danh sách sinh viên: $e');
+    }
+    setState(() {});
+    // return students;
+  }
+
+  String getFirstLetters(String input) {
+    List<String> words = input.split(" ");
+    String result = "";
+
+    for (var word in words) {
+      if (word.isNotEmpty) {
+        result += word[0].toUpperCase();
+      }
+    }
+
+    return result;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getStudent(key: widget.keyString, isCourses: widget.isCourses);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,53 +178,65 @@ class _StudentListPageState extends State<StudentListPage> {
                   ),
                   ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 5,
+                      itemCount: students.length,
                       itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            const Expanded(
-                              flex: 2,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Vũ Trọng Hiếu",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>  EditStudentPage(student: students[index]),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    students[index].name,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.visible,
                                   ),
-                                  overflow: TextOverflow.visible,
                                 ),
                               ),
-                            ),
-                            const Expanded(
-                              flex: 2,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "20CNTT123",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                              Expanded(
+                                flex: 2,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    students[index].msv,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.visible,
                                   ),
-                                  overflow: TextOverflow.visible,
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  widget.isCourses ? "CNTT" : "D20",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                              Expanded(
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    widget.isCourses
+                                        ? getFirstLetters(
+                                            students[index].majors)
+                                        : students[index].course,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.visible,
                                   ),
-                                  overflow: TextOverflow.visible,
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         );
                       })
                 ],

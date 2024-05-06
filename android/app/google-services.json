@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "531277473038",
+    "project_id": "ptit-flutter",
+    "storage_bucket": "ptit-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531277473038:android:22cffd01a1cc41dbeda35f",
+        "android_client_info": {
+          "package_name": "com.example.ptit_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5xCm0KaUAIdf2lki3E77PXZmmnVmY2Uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

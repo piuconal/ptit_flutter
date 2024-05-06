@@ -7,12 +7,16 @@ class Student {
   String dateOfBirth;
   String course;
   String majors;
+  String imagePath;
+  String? uid;
   Student({
     required this.name,
     required this.msv,
     required this.dateOfBirth,
     required this.course,
     required this.majors,
+    required this.imagePath,
+    this.uid,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +26,7 @@ class Student {
       'dateOfBirth': dateOfBirth,
       'course': course,
       'majors': majors,
+      'imagePath':imagePath,
     };
   }
 
@@ -32,6 +37,7 @@ class Student {
       dateOfBirth: map['dateOfBirth'] as String,
       course: map['course'] as String,
       majors: map['majors'] as String,
+      imagePath: map['imagePath'] as String,
     );
   }
 

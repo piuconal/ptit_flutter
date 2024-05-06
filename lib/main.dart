@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:ptit_flutter/ui/pages/admin_management_page/admin_management_page.dart';
-import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
+import 'package:ptit_flutter/firebase_options.dart';
+import 'package:ptit_flutter/ui/pages/home_page/home_page.dart';
 import 'package:ptit_flutter/ui/pages/splash_page/splash_page.dart';
-import 'package:ptit_flutter/ui/pages/student_info_page/student_info_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  //Khới tạo kết nối firebase
+  // try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  // } catch (e) {
+  //   debugPrint(e.toString());
+  // }
   //Chạy app
   runApp(const MyApp());
 }
@@ -25,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //đặt màn hình đầu tiên là màn splash
-      home: const SplashPage(),
+      home: const HomePage(),
     );
   }
 }

@@ -1,26 +1,80 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
+import 'dart:typed_data';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:developer';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ptit_flutter/configs/app_constant.dart';
-import 'package:ptit_flutter/ui/pages/student_info_page/components/avatar_widget.dart';
+import 'package:ptit_flutter/data/models/student.dart';
+import 'package:ptit_flutter/ui/pages/add_student_page/components/avatar_widget.dart';
 import 'package:ptit_flutter/ui/widgets/primary_button.dart';
 import 'package:ptit_flutter/ui/widgets/primary_dropdown.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StudentInfoPage extends StatefulWidget {
-  const StudentInfoPage({super.key});
+class AddStudentPage extends StatefulWidget {
+  const AddStudentPage({super.key});
 
   @override
-  State<StudentInfoPage> createState() => _StudentInfoPageState();
+  State<AddStudentPage> createState() => _AddStudentPageState();
 }
 
-class _StudentInfoPageState extends State<StudentInfoPage> {
+class _AddStudentPageState extends State<AddStudentPage> {
+  TextEditingController nameController = TextEditingController();
+
   String date = "dd/mm/yyyy";
   String majorsValue = 'Công nghệ thông tin';
   String coursesValue = 'D20';
-  String? imagePath;
+  Uint8List? imageSource;
+
+  Future<void> saveStudentToFirestore() async {
+    try {
+      String imagePath = "";
+      if (imageSource != null) {
+        imagePath =
+            await postImageToCloud(data: imageSource!, album: "students");
+      }
+      log("link ảnh $imagePath");
+      Student student = Student(
+        name: nameController.text,
+        msv: "B20DCCN310",
+        dateOfBirth: date,
+        course: coursesValue,
+        majors: majorsValue,
+        imagePath: imagePath,
+      );
+      await FirebaseFirestore.instance
+          .collection('students')
+          .add(student.toMap());
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Đã lưu thông tin sinh viên thành công."),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lỗi khi lưu thông tin sinh viên: ${e.toString()}"),
+      ));
+    }
+  }
+
+  Future<String> postImageToCloud(
+      {required Uint8List data, required String album}) async {
+    final int imageId = DateTime.now().millisecondsSinceEpoch;
+    final storageRef =
+        FirebaseStorage.instance.ref().child('$album/image$imageId.png');
+    try {
+      await storageRef.putData(data);
+      var imagePath = await storageRef.getDownloadURL();
+      return imagePath;
+    } catch (e) {
+      log(e.toString());
+      rethrow; // Throw lại lỗi để xử lý ở nơi gọi phương thức nếu cần
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +174,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                       height: 32,
                       // width: 280,
                       child: TextFormField(
+                        controller: nameController,
                         decoration: InputDecoration(
                           // label: const Text("Mã sinh viên"),
                           enabledBorder: OutlineInputBorder(
@@ -236,22 +291,25 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                         return;
                       }
 
+                      Uint8List? imageBytes = await response.readAsBytes();
+
                       setState(() {
-                        imagePath = response.path;
+                        // Lưu trữ dữ liệu của hình ảnh dưới dạng Uint8List
+                        imageSource = imageBytes;
                       });
                     }),
                 const SizedBox(width: 20),
               ],
             ),
             const SizedBox(height: 50),
-            AvatarWidget(imagePath: imagePath),
+            AvatarWidget(imageSource: imageSource),
             const SizedBox(height: 50),
             PrimaryButton(
                 weight: 260,
                 height: 55,
                 fontSize: 17,
                 title: "Thêm vào danh sách",
-                onTap: () {})
+                onTap: () => saveStudentToFirestore())
           ],
         ),
       ),

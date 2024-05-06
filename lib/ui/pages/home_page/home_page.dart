@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ptit_flutter/ui/pages/add_student_page/add_student_page.dart';
 import 'package:ptit_flutter/ui/pages/admin_management_page/admin_management_page.dart';
-import 'package:ptit_flutter/ui/pages/student_info_page/student_info_page.dart';
 import 'package:ptit_flutter/ui/widgets/primary_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const StudentInfoPage(),
+                    builder: (context) => const AddStudentPage(),
                   ),
                 );
               },
