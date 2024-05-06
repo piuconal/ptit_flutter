@@ -9,22 +9,22 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 160,
+      height: 250,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: Colors.red, width: 2),
       ),
       child: Container(
-        height: 150,
-        width: 150,
+        height: 230,
+        width: 230,
         decoration:
             BoxDecoration(shape: BoxShape.circle, color: Colors.grey[300]),
         child: imagePath == null
             ? const Icon(Icons.image)
             : ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Image.file(File(imagePath!),fit:BoxFit.cover),
+                child: Image.file(File(imagePath!), fit: BoxFit.cover),
               ),
       ),
     );

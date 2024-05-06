@@ -18,11 +18,14 @@ class HomePage extends StatelessWidget {
           children: [
             const Text(
               "Chào mừng đến Quản lý sinh viên",
-              style: TextStyle(color: Colors.red, fontSize: 18),
+              style: TextStyle(
+                  color: Colors.red, fontSize: 20, fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 40),
             PrimaryButton(
               title: "Thêm sinh viên",
+              weight: 250,
+              height: 50,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -34,6 +37,8 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 32),
             PrimaryButton(
               title: "Xem thông tin",
+              weight: 250,
+              height: 50,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

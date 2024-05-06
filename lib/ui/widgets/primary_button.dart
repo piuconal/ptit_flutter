@@ -7,7 +7,7 @@ class PrimaryButton extends StatelessWidget {
     this.height = 40,
     this.weight = 160,
     required this.onTap,
-    this.fontSize = 18,
+    this.fontSize = 18, this.borderRadius=20,
   });
 
   final double? height;
@@ -15,6 +15,7 @@ class PrimaryButton extends StatelessWidget {
   final Function() onTap;
   final String title;
   final double? fontSize;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class PrimaryButton extends StatelessWidget {
         width: weight,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Colors.red),
+            borderRadius: BorderRadius.circular(borderRadius!), color: Colors.red),
         child: Text(
           title,
           style:  TextStyle(

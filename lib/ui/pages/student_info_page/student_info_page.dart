@@ -39,6 +39,9 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -56,8 +59,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
-
+                const SizedBox(width: 26),
                 Expanded(
                   //Expanded giúp giãn hết cỡ kích thước nó có thể nhận
                   flex: 3,
@@ -72,7 +74,8 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                             currentDate: DateTime(2000, 1, 1));
                         log(datex.toString());
                         setState(() {
-                          String formattedDate = DateFormat('dd/MM/yyyy').format(datex??DateTime(2023, 1, 1));
+                          String formattedDate = DateFormat('dd/MM/yyyy')
+                              .format(datex ?? DateTime(2023, 1, 1));
                           date = formattedDate;
                         });
                       },
@@ -90,7 +93,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const SizedBox(width: 20),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -132,7 +135,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const SizedBox(width: 20),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -169,7 +172,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const SizedBox(width: 20),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -206,7 +209,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const SizedBox(width: 20),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -224,6 +227,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const Spacer(),
                 PrimaryButton(
                     title: "Tải ảnh lên",
+                    fontSize: 16,
                     onTap: () async {
                       final ImagePicker picker = ImagePicker();
                       final response =
@@ -239,13 +243,13 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                 const SizedBox(width: 20),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             AvatarWidget(imagePath: imagePath),
             const SizedBox(height: 40),
             PrimaryButton(
-                weight: 300,
-                height: 60,
-                fontSize: 22,
+                weight: 260,
+                height: 55,
+                fontSize: 17,
                 title: "Thêm vào danh sách",
                 onTap: () {})
           ],
