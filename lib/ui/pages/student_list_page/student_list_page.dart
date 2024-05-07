@@ -3,6 +3,19 @@ import 'package:ptit_flutter/data/models/student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ptit_flutter/ui/pages/edit_student_page/edit_student_page.dart';
 
+String getFirstLetters(String input) {
+    List<String> words = input.split(" ");
+    String result = "";
+
+    for (var word in words) {
+      if (word.isNotEmpty) {
+        result += word[0].toUpperCase();
+      }
+    }
+
+    return result;
+  }
+
 class StudentListPage extends StatefulWidget {
   const StudentListPage(
       {super.key, required this.keyString, required this.isCourses});
@@ -14,11 +27,15 @@ class StudentListPage extends StatefulWidget {
 }
 
 class _StudentListPageState extends State<StudentListPage> {
+  bool isLoading = false;
+
   String date = "01/01/1990";
   String majorsValue = 'Công nghệ thông tin';
   String coursesValue = 'D20';
   String? imagePath;
   List<Student> students = [];
+  List<Student> searchResult = [];
+  TextEditingController searchController = TextEditingController();
 
   Future<void> getStudent(
       {required String key, required bool isCourses}) async {
@@ -30,28 +47,43 @@ class _StudentListPageState extends State<StudentListPage> {
 
       students = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Student.fromMap(data);
+        Student student = Student.fromMap(data);
+        student.uid = doc.id; // Gán uid của sinh viên từ Firebase
+        return student;
       }).toList();
+      searchResult = students;
 
-      print('Đã lấy ra danh sách sinh viên thành công.');
+      print('Đã lấy ra danh sách sinh viên thành công: ${students[0].uid}');
     } catch (e) {
       print('Lỗi khi lấy ra danh sách sinh viên: $e');
     }
     setState(() {});
-    // return students;
   }
 
-  String getFirstLetters(String input) {
-    List<String> words = input.split(" ");
-    String result = "";
+  
 
-    for (var word in words) {
-      if (word.isNotEmpty) {
-        result += word[0].toUpperCase();
+  void searchStudent(String searchText) {
+    List<Student> search = [];
+
+    for (var student in students) {
+      if (widget.isCourses) {
+        if (student.name.toLowerCase().contains(searchText.toLowerCase()) ||
+            student.msv.toLowerCase().contains(searchText.toLowerCase()) ||
+            student.majors.toLowerCase().contains(searchText.toLowerCase())) {
+          search.add(student);
+        }
+      } else {
+        if (student.name.toLowerCase().contains(searchText.toLowerCase()) ||
+            student.msv.toLowerCase().contains(searchText.toLowerCase()) ||
+            student.course.toLowerCase().contains(searchText.toLowerCase())) {
+          search.add(student);
+        }
       }
     }
 
-    return result;
+    setState(() {
+      searchResult = search;
+    });
   }
 
   @override
@@ -74,7 +106,8 @@ class _StudentListPageState extends State<StudentListPage> {
               fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
+      body: 
+       SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -101,11 +134,13 @@ class _StudentListPageState extends State<StudentListPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: Colors.grey[300]),
-                      child: const TextField(
+                      child: TextField(
+                        controller: searchController,
                         decoration: InputDecoration(
-                          hintText: 'Tìm kiếm theo tên/mã/ngành',
+                          hintText:
+                              'Tìm kiếm theo tên/mã/${widget.isCourses ? "ngành" : "khóa"}',
                           contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20.0),
+                              const EdgeInsets.symmetric(horizontal: 20.0),
                           border: InputBorder.none,
                         ),
                       ),
@@ -121,7 +156,7 @@ class _StudentListPageState extends State<StudentListPage> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        // Xử lý khi nút tìm kiếm được nhấn
+                        searchStudent(searchController.text);
                       },
                     ),
                   ),
@@ -178,15 +213,17 @@ class _StudentListPageState extends State<StudentListPage> {
                   ),
                   ListView.builder(
                       shrinkWrap: true,
-                      itemCount: students.length,
+                      itemCount: searchResult.length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
+                          onTap: () async {
+                            await Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>  EditStudentPage(student: students[index]),
+                                builder: (context) => EditStudentPage(
+                                    student: searchResult[index]),
                               ),
                             );
+                            getStudent(key: widget.keyString, isCourses: widget.isCourses);
                           },
                           child: Row(
                             children: [
