@@ -80,7 +80,7 @@ class _StudentListPageState extends State<StudentListPage> {
         }
       }
     }
-
+    searchResult.clear();
     setState(() {
       searchResult = search;
     });
@@ -232,7 +232,7 @@ class _StudentListPageState extends State<StudentListPage> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    students[index].name,
+                                    searchResult[index].name,
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -246,7 +246,7 @@ class _StudentListPageState extends State<StudentListPage> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    students[index].msv,
+                                    searchResult[index].msv,
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -262,8 +262,8 @@ class _StudentListPageState extends State<StudentListPage> {
                                   child: Text(
                                     widget.isCourses
                                         ? getFirstLetters(
-                                            students[index].majors)
-                                        : students[index].course,
+                                            searchResult[index].majors)
+                                        : searchResult[index].course,
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

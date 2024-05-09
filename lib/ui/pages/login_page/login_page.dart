@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/configs/app_assets.dart';
 import 'package:ptit_flutter/ui/pages/home_page/home_page.dart';
+import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
 import 'package:ptit_flutter/ui/widgets/primary_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -24,12 +27,19 @@ class _LoginPageState extends State<LoginPage> {
         email: _usernameController.text,
         password: _passwordController.text,
       );
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
+      if (_usernameController.text.contains("stu.ptit")) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>  StudentHomePage(msv: _passwordController.text),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
+      }
     } catch (e) {
       // Xử lý lỗi đăng nhập
       // ignore: use_build_context_synchronously

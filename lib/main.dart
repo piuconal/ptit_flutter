@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/firebase_options.dart';
-import 'package:ptit_flutter/ui/pages/home_page/home_page.dart';
-import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
-import 'package:ptit_flutter/ui/pages/splash_page/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
 
 Future<void> main() async {
   //Khới tạo kết nối firebase
@@ -35,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //đặt màn hình đầu tiên là màn splash
-      home: const LoginPage(),
+      home:  const StudentHomePage(msv: "D24VT016"),
     );
   }
 }

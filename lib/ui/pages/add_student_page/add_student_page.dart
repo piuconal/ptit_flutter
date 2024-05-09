@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
+import 'package:diacritic/diacritic.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:developer';
@@ -15,20 +17,20 @@ import 'package:ptit_flutter/ui/widgets/primary_button.dart';
 import 'package:ptit_flutter/ui/widgets/primary_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
- Future<String> postImageToCloud(
-      {required Uint8List data, required String album}) async {
-    final int imageId = DateTime.now().millisecondsSinceEpoch;
-    final storageRef =
-        FirebaseStorage.instance.ref().child('$album/image$imageId.png');
-    try {
-      await storageRef.putData(data);
-      var imagePath = await storageRef.getDownloadURL();
-      return imagePath;
-    } catch (e) {
-      log(e.toString());
-      rethrow; // Throw lại lỗi để xử lý ở nơi gọi phương thức nếu cần
-    }
+Future<String> postImageToCloud(
+    {required Uint8List data, required String album}) async {
+  final int imageId = DateTime.now().millisecondsSinceEpoch;
+  final storageRef =
+      FirebaseStorage.instance.ref().child('$album/image$imageId.png');
+  try {
+    await storageRef.putData(data);
+    var imagePath = await storageRef.getDownloadURL();
+    return imagePath;
+  } catch (e) {
+    log(e.toString());
+    rethrow; // Throw lại lỗi để xử lý ở nơi gọi phương thức nếu cần
   }
+}
 
 class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
@@ -49,6 +51,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   Future<void> saveStudentToFirestore() async {
     try {
+      if (date == "dd/mm/yyyy" ||
+          nameController.text == "" ||
+          imageSource == null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Vui lòng nhập đầy đủ thông tin để tiếp tục"),
+        ));
+        return;
+      }
       setState(() {
         isLoading = true;
       });
@@ -59,6 +69,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       }
       log("link ảnh $imagePath");
       var msv = await createMSV();
+
       Student student = Student(
         name: nameController.text,
         msv: msv,
@@ -76,6 +87,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Đã lưu thông tin sinh viên thành công."),
       ));
+      await createFirebaseAccount(msv);
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -84,27 +96,55 @@ class _AddStudentPageState extends State<AddStudentPage> {
     }
   }
 
- 
-
   Future<String> createMSV() async {
-     DatabaseReference msvRef = FirebaseDatabase.instance.ref().child('msv');
-     String newMsv = "";
-      try {
-    // Đọc giá trị hiện tại của biến "msv" từ Realtime Database
-    DataSnapshot dataSnapshot = await msvRef.get();
-    int currentMsv = dataSnapshot.value as int;
+    DatabaseReference msvRef = FirebaseDatabase.instance.ref().child('msv');
+    String newMsv = "";
+    try {
+      // Đọc giá trị hiện tại của biến "msv" từ Realtime Database
+      DataSnapshot dataSnapshot = await msvRef.get();
+      int currentMsv = dataSnapshot.value as int;
 
-    // Chuyển giá trị đọc được thành chuỗi và thêm các số 0 đằng trước để đảm bảo rằng chuỗi có độ dài 3 ký tự
-     newMsv = (currentMsv + 1).toString().padLeft(3, '0');
+      // Chuyển giá trị đọc được thành chuỗi và thêm các số 0 đằng trước để đảm bảo rằng chuỗi có độ dài 3 ký tự
+      newMsv = (currentMsv + 1).toString().padLeft(3, '0');
 
-    // Đẩy giá trị mới lên Realtime Database
-    await msvRef.set(currentMsv+1);
-    print('Đã cập nhật msv mới thành công.');
-  } catch (e) {
-    print('Lỗi khi cập nhật msv mới: $e');
-  }
+      // Đẩy giá trị mới lên Realtime Database
+      await msvRef.set(currentMsv + 1);
+    } catch (e) {
+      debugPrint('Lỗi khi cập nhật msv mới: $e');
+    }
     String majorsString = getFirstLetters(majorsValue);
     return "$coursesValue$majorsString$newMsv";
+  }
+
+  Future<void> createFirebaseAccount(String password) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: convertToEmail(),
+        password: password,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Tạo tài khoản sinh viên thành công."),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Có lỗi khi tạo tài khoản sinh viên"),
+      ));
+    }
+  }
+
+  String convertToEmail() {
+    List<String> nameParts =
+        removeDiacritics(nameController.text.trim()).split(" ");
+    String email = "";
+    email += nameParts.last.toLowerCase();
+    for (int i = 0; i < nameParts.length; i++) {
+      if (nameParts[i].isNotEmpty && i != nameParts.length-1) {
+        email += nameParts[i][0].toLowerCase();
+      }
+    }
+
+    return "$email@stu.ptit.com.vn";
   }
 
   @override
