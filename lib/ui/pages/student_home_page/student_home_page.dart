@@ -56,24 +56,29 @@ class _StudentHomePageState extends State<StudentHomePage> {
           )
         : Scaffold(
             appBar: AppBar(
-              leading: AvatarWidget(
-                imageUrl: student!.imagePath,
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                child: AvatarWidget(
+                  imageUrl: student!.imagePath,
+                  fit: BoxFit.cover,
+                ),
               ),
+              titleSpacing: 0,
               title: InkWell(
                 onTap: () => Navigator.of(context).pop(),
                 child: Container(
-                  height: 30,
+                  height: 40,
                   width: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Colors.red),
                   child: const Text(
-                    "Đăng xuất",
+                    "⚪ ĐĂNG XUẤT",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -87,20 +92,20 @@ class _StudentHomePageState extends State<StudentHomePage> {
             ),
             body: pages[curPage],
             bottomNavigationBar: BottomNavigationBar(
-              onTap: (value) {
-                setState(() {
-                  curPage=value;
-                });
-              },
-              currentIndex: curPage,
-
-              items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home_filled), label: "Thông báo"),
-              BottomNavigationBarItem(icon: Icon(Icons.alarm), label: "Hẹn"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.info), label: "Thông tin")
-            ]),
+                onTap: (value) {
+                  setState(() {
+                    curPage = value;
+                  });
+                },
+                currentIndex: curPage,
+                items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.home_filled), label: "Thông báo"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.alarm), label: "Hẹn"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.info), label: "Thông tin")
+                ]),
           );
   }
 }
