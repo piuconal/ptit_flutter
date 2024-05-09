@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/data/models/student.dart';
-import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget.dart';
+import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget1.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
 
 class InfoPage extends StatefulWidget {
@@ -17,11 +17,17 @@ class _InfoPageState extends State<InfoPage> {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: AvatarWidget(imageUrl: student!.imagePath),
+              const SizedBox(
+                height: 35,
               ),
-              const SizedBox(height: 30,),
+              SizedBox(
+                width: 250,
+                height: 300,
+                child: AvatarWidget1(imageUrl: student!.imagePath),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 90),
                 child: Column(
@@ -31,7 +37,8 @@ class _InfoPageState extends State<InfoPage> {
                       children: [
                         Text(
                           "Họ và Tên: ${student!.name}",
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         )
                       ],
                     ),
@@ -39,8 +46,9 @@ class _InfoPageState extends State<InfoPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "MSV: ${student!.msv}",
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          "Mã sinh viên: ${student!.msv}",
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         )
                       ],
                     ),
@@ -49,7 +57,8 @@ class _InfoPageState extends State<InfoPage> {
                       children: [
                         Text(
                           "Ngày sinh : ${student!.dateOfBirth}",
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         )
                       ],
                     ),
@@ -58,7 +67,8 @@ class _InfoPageState extends State<InfoPage> {
                       children: [
                         Text(
                           "Ngành : ${student!.majors}",
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         )
                       ],
                     ),
@@ -67,7 +77,8 @@ class _InfoPageState extends State<InfoPage> {
                       children: [
                         Text(
                           "Khóa : ${student!.course}",
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         )
                       ],
                     ),
