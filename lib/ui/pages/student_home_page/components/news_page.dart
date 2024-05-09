@@ -10,6 +10,7 @@ class NewPages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 10),
         Container(
           height: 40,
           width: double.infinity,
@@ -17,7 +18,7 @@ class NewPages extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           alignment: Alignment.centerLeft,
           child: const Text(
-            "Thông báo",
+            "THÔNG BÁO",
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -58,7 +59,7 @@ class NewPages extends StatelessWidget {
                         width: 320,
                         // height: 50,
                         child: Text(
-                          ">>${AppConstant.ptitNews[index].title}",
+                          "📌 ${AppConstant.ptitNews[index].title}",
                           style: const TextStyle(
                               color: Colors.black, fontSize: 14),
                           overflow: TextOverflow.clip,
