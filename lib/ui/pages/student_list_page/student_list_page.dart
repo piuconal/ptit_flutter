@@ -1,20 +1,24 @@
+
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/data/models/student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ptit_flutter/ui/pages/edit_student_page/edit_student_page.dart';
 
 String getFirstLetters(String input) {
-    List<String> words = input.split(" ");
-    String result = "";
+  List<String> words = input.split(" ");
+  String result = "";
 
-    for (var word in words) {
-      if (word.isNotEmpty) {
-        result += word[0].toUpperCase();
-      }
+  for (var word in words) {
+    if (word.isNotEmpty) {
+      result += word[0].toUpperCase();
     }
-
-    return result;
   }
+
+  return result;
+}
 
 class StudentListPage extends StatefulWidget {
   const StudentListPage(
@@ -60,8 +64,6 @@ class _StudentListPageState extends State<StudentListPage> {
     setState(() {});
   }
 
-  
-
   void searchStudent(String searchText) {
     List<Student> search = [];
 
@@ -80,9 +82,13 @@ class _StudentListPageState extends State<StudentListPage> {
         }
       }
     }
-    searchResult.clear();
+    // searchResult.clear();
     setState(() {
-      searchResult = search;
+      if (search.isEmpty) {
+        searchResult = students;
+      } else {
+        searchResult = search;
+      }
     });
   }
 
@@ -106,8 +112,7 @@ class _StudentListPageState extends State<StudentListPage> {
               fontWeight: FontWeight.bold),
         ),
       ),
-      body: 
-       SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -157,6 +162,7 @@ class _StudentListPageState extends State<StudentListPage> {
                       ),
                       onPressed: () {
                         searchStudent(searchController.text);
+                        log(searchController.text);
                       },
                     ),
                   ),
@@ -223,7 +229,9 @@ class _StudentListPageState extends State<StudentListPage> {
                                     student: searchResult[index]),
                               ),
                             );
-                            getStudent(key: widget.keyString, isCourses: widget.isCourses);
+                            getStudent(
+                                key: widget.keyString,
+                                isCourses: widget.isCourses);
                           },
                           child: Row(
                             children: [

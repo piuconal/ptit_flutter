@@ -7,6 +7,9 @@ import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget
 import 'package:ptit_flutter/ui/pages/student_home_page/components/info_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/news_page.dart';
 
+  Student? student;
+
+
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key, required this.msv});
   final String msv;
@@ -16,7 +19,6 @@ class StudentHomePage extends StatefulWidget {
 }
 
 class _StudentHomePageState extends State<StudentHomePage> {
-  Student? student;
 
   Future<void> getStudent() async {
     try {
@@ -45,7 +47,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     getStudent();
   }
 
-  List<Widget> pages = [const NewPages(), const SizedBox(), InfoPage()];
+  List<Widget> pages = [const NewPages(), const SizedBox(), const InfoPage()];
   int curPage = 0;
 
   @override
@@ -60,7 +62,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 padding: const EdgeInsets.all(8),
                 child: AvatarWidget(
                   imageUrl: student!.imagePath,
-                  fit: BoxFit.cover,
+                  // fit: BoxFit.cover,
                 ),
               ),
               titleSpacing: 0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
 
 Future<void> main() async {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //đặt màn hình đầu tiên là màn splash
-      home:  const StudentHomePage(msv: "D24VT016"),
+      home:  const LoginPage(),
     );
   }
 }
