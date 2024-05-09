@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/data/models/student.dart';
+import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/info_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/news_page.dart';
 
-  Student? student;
-
+Student? student;
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key, required this.msv});
@@ -19,7 +19,6 @@ class StudentHomePage extends StatefulWidget {
 }
 
 class _StudentHomePageState extends State<StudentHomePage> {
-
   Future<void> getStudent() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -60,14 +59,18 @@ class _StudentHomePageState extends State<StudentHomePage> {
             appBar: AppBar(
               leading: Container(
                 padding: const EdgeInsets.all(8),
-                child: AvatarWidget(
-                  imageUrl: student!.imagePath,
+                child: const AvatarWidget(
+                  imageUrl:
+                      'https://avatars.githubusercontent.com/u/57191540?s=200&v=4',
                   // fit: BoxFit.cover,
                 ),
               ),
               titleSpacing: 0,
               title: InkWell(
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () =>
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                )),
                 child: Container(
                   height: 40,
                   width: 100,
@@ -92,7 +95,27 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 SizedBox(width: 20),
               ],
             ),
-            body: pages[curPage],
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                  child: Text(
+                    student != null
+                        ? "🧑🏼‍💻  Xin chào, ${student!.name}"
+                        : "Xin chào",
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic),
+                  ),
+                ),
+                Expanded(
+                  child: pages[curPage],
+                ),
+              ],
+            ),
             bottomNavigationBar: BottomNavigationBar(
                 onTap: (value) {
                   setState(() {
