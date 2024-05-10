@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
+import 'package:ptit_flutter/service/noti_service.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   //Khới tạo kết nối firebase
   // try {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  WidgetsFlutterBinding.ensureInitialized();
+
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // } catch (e) {
   //   debugPrint(e.toString());
   // }
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //đặt màn hình đầu tiên là màn splash
-      home:  const LoginPage(),
+      home: const StudentHomePage(msv: "D24VT016"),
     );
   }
 }

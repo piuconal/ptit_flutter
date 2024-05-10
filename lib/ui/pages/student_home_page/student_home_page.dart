@@ -7,6 +7,7 @@ import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/info_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/news_page.dart';
+import 'package:ptit_flutter/ui/pages/student_home_page/components/schedule_page.dart';
 
 Student? student;
 
@@ -19,6 +20,7 @@ class StudentHomePage extends StatefulWidget {
 }
 
 class _StudentHomePageState extends State<StudentHomePage> {
+  PageController controller = PageController(initialPage: 0);
   Future<void> getStudent() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -46,7 +48,11 @@ class _StudentHomePageState extends State<StudentHomePage> {
     getStudent();
   }
 
-  List<Widget> pages = [const NewPages(), const SizedBox(), const InfoPage()];
+  List<Widget> pages = [
+    const NewPages(),
+    const SchedulePage(),
+    const InfoPage()
+  ];
   int curPage = 0;
 
   @override
@@ -67,10 +73,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
               ),
               titleSpacing: 0,
               title: InkWell(
-                onTap: () =>
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                )),
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
                 child: Container(
                   height: 40,
                   width: 100,
@@ -111,16 +120,26 @@ class _StudentHomePageState extends State<StudentHomePage> {
                         fontStyle: FontStyle.italic),
                   ),
                 ),
-                Expanded(
-                  child: pages[curPage],
+                SizedBox(
+                  height: 590,
+                  child: PageView(
+                    controller: controller,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (value) {
+                      setState(() {
+                        curPage = value;
+                      });
+                    },
+                    children: pages,
+                  ),
                 ),
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
                 onTap: (value) {
-                  setState(() {
-                    curPage = value;
-                  });
+                  // setState(() {
+                    controller.jumpToPage(value);
+                  // });
                 },
                 currentIndex: curPage,
                 items: const [
