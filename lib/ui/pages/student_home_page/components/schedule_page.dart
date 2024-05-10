@@ -180,17 +180,24 @@ class _SchedulePageState extends State<SchedulePage> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(
-                                      width: 25,
+                                      width: 20,
                                     ),
                                     Text(
-                                      "🕑 ${noti.dateTime.hour}:${noti.dateTime.minute < 10 ? '0${noti.dateTime.minute}' : '${noti.dateTime.minute}'}",
+                                      "🕑 ${noti.dateTime.hour < 10 ? '0${noti.dateTime.hour}' : '${noti.dateTime.hour}'}:"
+                                      "${noti.dateTime.minute < 10 ? '0${noti.dateTime.minute}' : '${noti.dateTime.minute}'}",
                                       style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 95, 32, 32),
-                                          fontWeight: FontWeight.bold),
+                                        color: Color.fromARGB(255, 95, 32, 32),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     const SizedBox(
-                                      width: 25,
+                                      width: 15,
+                                    ),
+                                    const Text(
+                                      "🧾 ",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 95, 32, 32)),
                                     ),
                                     Text(
                                       noti.notification,
