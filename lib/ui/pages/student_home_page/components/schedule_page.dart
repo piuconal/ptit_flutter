@@ -136,39 +136,67 @@ class _SchedulePageState extends State<SchedulePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Hẹn lịch học"),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "Hẹn lịch học",
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               ListView.builder(
                   itemCount: notis.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     var noti = notis[index];
                     return noti.dateTime.isBefore(DateTime.now())
-                        ? const SizedBox()
+                        ? const SizedBox(
+                            height: 0.2,
+                          )
                         : Container(
-                            height: 40,
+                            height: 50,
                             width: 300,
-                            decoration:
-                                const BoxDecoration(color: Colors.black),
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 243, 185, 185)),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
+                              padding:
+                                  const EdgeInsets.only(top: 15, bottom: 15),
                               child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${noti.dateTime.day}/${noti.dateTime.month}/${noti.dateTime.year}",
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                    const SizedBox(
+                                      width: 20,
                                     ),
                                     Text(
-                                      "${noti.dateTime.hour}:${noti.dateTime.minute < 10 ? '0${noti.dateTime.minute}' : '${noti.dateTime.minute}'}",
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                      "💕 ${noti.dateTime.day}/${noti.dateTime.month}/${noti.dateTime.year}",
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 95, 32, 32),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 25,
+                                    ),
+                                    Text(
+                                      "🕑 ${noti.dateTime.hour}:${noti.dateTime.minute < 10 ? '0${noti.dateTime.minute}' : '${noti.dateTime.minute}'}",
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 95, 32, 32),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 25,
                                     ),
                                     Text(
                                       noti.notification,
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 95, 32, 32)),
                                     ),
                                   ]),
                             ),
