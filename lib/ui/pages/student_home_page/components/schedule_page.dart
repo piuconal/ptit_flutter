@@ -7,8 +7,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:ptit_flutter/data/models/notifications.dart';
+import 'package:ptit_flutter/global/global_data.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:ptit_flutter/service/noti_service.dart';
+import 'package:ptit_flutter/ui/pages/student_home_page/student_home_page.dart';
 
 DateTime scheduleTime = DateTime.now();
 
@@ -31,7 +33,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
   Future<void> getListNoti() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('notifications').get();
+        await FirebaseFirestore.instance.collection('notifications').where("uid", isEqualTo:GlobalData.instance.uid).get();
 
     notis = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -113,6 +115,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   await FirebaseFirestore.instance
                       .collection('notifications')
                       .add(NotificationsModel(
+                              uid:GlobalData.instance.uid,
                               dateTime: dateTime,
                               notification: textEditingController.text)
                           .toMap());

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ptit_flutter/data/models/student.dart';
+import 'package:ptit_flutter/global/global_data.dart';
 import 'package:ptit_flutter/ui/pages/login_page/login_page.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/avatar_widget.dart';
 import 'package:ptit_flutter/ui/pages/student_home_page/components/info_page.dart';
@@ -32,6 +33,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         Map<String, dynamic> data =
             querySnapshot.docs.first.data() as Map<String, dynamic>;
         student = Student.fromMap(data);
+        GlobalData.instance.uid=student?.uid??"";
         log("sv ${student!.name}");
       } else {}
     } catch (e) {
