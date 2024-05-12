@@ -48,7 +48,9 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
+
           onPressed: () async {
             try {
               textEditingController.clear();

@@ -107,36 +107,38 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 SizedBox(width: 20),
               ],
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(
-                    student != null
-                        ? "🧑🏼‍💻  Xin chào, ${student!.name}"
-                        : "Xin chào",
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontStyle: FontStyle.italic),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                    child: Text(
+                      student != null
+                          ? "🧑🏼‍💻  Xin chào, ${student!.name}"
+                          : "Xin chào",
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                          fontStyle: FontStyle.italic),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 590,
-                  child: PageView(
-                    controller: controller,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: (value) {
-                      setState(() {
-                        curPage = value;
-                      });
-                    },
-                    children: pages,
+                  SizedBox(
+                    height: 590,
+                    child: PageView(
+                      controller: controller,
+                      scrollDirection: Axis.horizontal,
+                      onPageChanged: (value) {
+                        setState(() {
+                          curPage = value;
+                        });
+                      },
+                      children: pages,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             bottomNavigationBar: BottomNavigationBar(
                 onTap: (value) {
