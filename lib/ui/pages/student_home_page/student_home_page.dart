@@ -33,8 +33,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
         Map<String, dynamic> data =
             querySnapshot.docs.first.data() as Map<String, dynamic>;
         student = Student.fromMap(data);
-        GlobalData.instance.uid=student?.uid??"";
+        GlobalData.instance.uid=querySnapshot.docs.first.id;
         log("sv ${student!.name}");
+        log("uid ${GlobalData.instance.uid}");
       } else {}
     } catch (e) {
       // Xử lý lỗi nếu có

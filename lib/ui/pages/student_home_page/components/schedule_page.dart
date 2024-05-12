@@ -32,8 +32,10 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Future<void> getListNoti() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('notifications').where("uid", isEqualTo:GlobalData.instance.uid).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('notifications')
+        .where("uid", isEqualTo: GlobalData.instance.uid)
+        .get();
 
     notis = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -111,11 +113,12 @@ class _SchedulePageState extends State<SchedulePage> {
                     body: textEditingController.text,
                     scheduledNotificationDateTime: dateTime,
                   );
+                  log("uid ${GlobalData.instance.uid}");
 
                   await FirebaseFirestore.instance
                       .collection('notifications')
                       .add(NotificationsModel(
-                              uid:GlobalData.instance.uid,
+                              uid: GlobalData.instance.uid,
                               dateTime: dateTime,
                               notification: textEditingController.text)
                           .toMap());
